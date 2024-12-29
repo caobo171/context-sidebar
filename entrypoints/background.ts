@@ -15,11 +15,17 @@ export default defineBackground(() => {
         browser.tabs.sendMessage(tab.id!, {messageType: MessageType.clickExtIcon});
     });
 
-    // background.js
-    browser.runtime.onMessage.addListener(async (message: ExtMessage, sender, sendResponse: (message: any) => void) => {
-        console.log("background:")
-        console.log(message)
-        if (message.messageType === MessageType.clickExtIcon) {
+
+    // // background.js
+    chrome.runtime.onMessage.addListener(async (message: ExtMessage, sender, sendResponse: (message: any) => void) => {
+		console.log("background:")
+        console.log(message, sender)
+
+		if (message.messageType === MessageType.sidePanelOpen) {
+			console.log('sidePanelOpen sending back')
+			sendResponse(!sender.documentId);
+
+		} else if (message.messageType === MessageType.clickExtIcon) {
             console.log(message)
             return true;
         } else if (message.messageType === MessageType.changeTheme || message.messageType === MessageType.changeLocale) {

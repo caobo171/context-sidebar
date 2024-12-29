@@ -1,7 +1,11 @@
 export enum MessageType {
     clickExtIcon = "clickExtIcon",
     changeTheme = "changeTheme",
-    changeLocale = "changeLocale"
+    changeLocale = "changeLocale",
+	sidePanelOpen = "sidePanelOpen",
+	navigate = "navigate",
+	injectCSS = "injectCSS",
+	injectJS = "injectJS",
 }
 
 export enum MessageFrom {
