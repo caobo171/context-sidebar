@@ -3,6 +3,6 @@
     "message": "Rework sidebar"
   },
   "extDescription": {
-    "message": "This is a boilerplate and starter for chrome browser extension, built with Wxt、 React、 Tailwind css 、Shadcn ui and Typescript.\nSupport dark mode and localization "
+    "message": "Never Lose Track: Keep Your Context Securely in the Sidebar!"
   }
 }

@@ -64,12 +64,27 @@ export default defineBackground(() => {
         message.messageType === MessageType.changeLocale ||
         message.messageType === MessageType.GoToWebsite
       ) {
-		chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-			console.log('tabs', tabs);
-			const activeTabId = tabs[0].id;
-			chrome.tabs.sendMessage(activeTabId, { ...message, tabId: activeTabId });
-		  });
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+          console.log("tabs", tabs);
+          const activeTabId = tabs[0].id;
+          chrome.tabs.sendMessage(activeTabId, {
+            ...message,
+            tabId: activeTabId,
+          });
+        });
       }
     }
   );
+
+ 
+  browser.runtime.onConnect.addListener(function(port){
+
+	if (port.name == 'side_panel'){
+		port.onDisconnect.addListener(() => {
+			browser.declarativeNetRequest.updateSessionRules({
+				removeRuleIds: [1]
+			});
+		})
+	}
+  })
 });
