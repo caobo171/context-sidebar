@@ -24,13 +24,11 @@ export default defineBackground(() => {
 		if (message.messageType === MessageType.sidePanelOpen) {
 			console.log('sidePanelOpen sending back')
 			sendResponse(!sender.documentId);
-
 		} else if (message.messageType === MessageType.clickExtIcon) {
             console.log(message)
             return true;
         } else if (message.messageType === MessageType.changeTheme || message.messageType === MessageType.changeLocale) {
             let tabs = await browser.tabs.query({active: true, currentWindow: true});
-            console.log(`tabs:${tabs.length}`)
             if (tabs) {
                 for (const tab of tabs) {
                     await browser.tabs.sendMessage(tab.id!, message);

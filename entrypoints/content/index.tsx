@@ -1,9 +1,3 @@
-import './style.css';
-import ReactDOM from 'react-dom/client';
-import App from './App.tsx';
-import {i18nConfig} from "@/components/i18nConfig.ts";
-import initTranslations from "@/components/i18n.ts";
-import {ThemeProvider} from "@/components/theme-provider.tsx";
 import { MessageType } from '../types.ts';
 
 export default defineContentScript({
@@ -15,7 +9,7 @@ export default defineContentScript({
 
 		/* global navigation */
 		if(window.top !== window && window.parent === window.top){
-			chrome.runtime.sendMessage({messageType: MessageType.sidePanelOpen}, (response) => {
+			chrome.runtime.sendMessage({messageType: MessageType.sidePanelOpen}, async (response) => {
 				console.log('content response',response)
 				
 
@@ -42,9 +36,7 @@ export default defineContentScript({
 					});
 					addEventListener("popstate", sendNavigateMessage);
 
-					// setInterval(() => {
-					// 	sendNavigateMessage();
-					// }, 1000);
+
 
 					addEventListener("message", (e) => {
 						console.log('FRAME MESSAGE', e.data);
@@ -61,14 +53,20 @@ export default defineContentScript({
 
 						if(e.data?.messageType === MessageType.injectJS){
 
-							document.querySelector('#injected-js')?.remove();
+							// document.querySelector('#injected-js')?.remove();
 
-							const script = document.createElement('script');
-							script.id = 'injected-js';
-							script.textContent = e.data?.rawJS; // Set the raw JS as the text content
-							document.head.appendChild(script);
+							// const script = document.createElement('script');
+							// script.id = 'injected-js';
+							// script.textContent = e.data?.rawJS; // Set the raw JS as the text content
+							// document.body.appendChild(script);
+							// const result = new Function(e.data?.rawJS)();
 							
 						}
+					});
+
+
+					await injectScript("/injected.js", {
+						keepInDom: true,
 					});
 				}
 			});

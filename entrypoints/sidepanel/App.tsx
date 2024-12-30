@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import './App.module.css';
 import '../../assets/main.css'
 import Sidebar, { SidebarType } from "@/entrypoints/sidebar.tsx";
-import { browser } from "wxt/browser";
+import { PublicPath, browser } from "wxt/browser";
 import ExtMessage, { MessageType } from "@/entrypoints/types.ts";
 import { Button } from "@/components/ui/button.tsx";
 import { Card } from "@/components/ui/card.tsx";
@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Minus, Plus } from 'lucide-react';
+import urlMapper from '../regex.mapper';
 
 export default () => {
 	const [showButton, setShowButton] = useState(true)
@@ -139,11 +140,14 @@ export default () => {
 			// set active panel
 			// open that web page
 			iframeRef.current.src = currenturl;
-			iframeRef.current.onload = () => {
+			iframeRef.current.onload = async () => {
 
-				console.log('IFRAME LOADED')
-				iframeRef.current?.contentWindow?.postMessage({ messageType: MessageType.injectCSS , rawCSS: 'body { background-color: red; }'}, '*');
-			
+				let value = urlMapper.get(currenturl);
+				let content = browser.runtime.getURL('preconfig/'+value + '/style.css' as PublicPath);
+
+				let text = await fetch(content).then((res) => res.text());
+
+				iframeRef.current?.contentWindow?.postMessage({ messageType: MessageType.injectCSS , rawCSS: text}, '*');
 				setIframeLoading(false);
 			}
 
@@ -157,7 +161,11 @@ export default () => {
 	return (
 		<div className={cn(theme, 'h-full flex flex-col')}>
 			<div className='flex flex-row gap-x-2 p-4'>
-				<Input type="text" value={url} placeholder="Type something" onChange={(e) => {
+				<Input type="text" value={url} placeholder="Type something" onKeyDown={(e) => {
+					if (e.key === 'Enter') {
+						actionGo();
+					}
+				}} onChange={(e) => {
 					setURL(e.target.value)
 				}} />
 				{!iframeLoading && 
