@@ -6,9 +6,20 @@ export default defineContentScript({
     cssInjectionMode: 'ui',
 	matchAboutBlank: true,
     async main(ctx) {
+		console.log('content script', ctx);
+		chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+			console.log('content message', message, sender);
+
+			if(message.messageType === MessageType.GoToWebsite){					
+				document.location = message.url;	
+			}
+		});
 
 		/* global navigation */
 		if(window.top !== window && window.parent === window.top){
+
+
+
 			chrome.runtime.sendMessage({messageType: MessageType.sidePanelOpen}, async (response) => {
 				console.log('content response',response)
 				
@@ -71,6 +82,8 @@ export default defineContentScript({
 					});
 				}
 			});
+
+
 		}
 		
         // initTranslations(i18nConfig.defaultLocale, ["common", "content"])

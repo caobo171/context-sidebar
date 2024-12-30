@@ -7,6 +7,7 @@ export enum MessageType {
 	injectCSS = "injectCSS",
 	injectJS = "injectJS",
 	OpenWebsite = "OpenWebsite",
+	GoToWebsite = "GoToWebsite",
 }
 
 export enum MessageFrom {

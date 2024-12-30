@@ -14,7 +14,7 @@ import Header from "@/entrypoints/sidepanel/header.tsx";
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Minus, Plus } from 'lucide-react';
+import { Minus, Plus, SquareArrowOutUpRight } from 'lucide-react';
 import urlMapper from '../regex.mapper';
 
 export default () => {
@@ -45,6 +45,11 @@ export default () => {
 	};
 
 
+	const handleGoToWebsite = () => {
+		browser.runtime.sendMessage({ messageType: MessageType.GoToWebsite, url: url });
+	};
+
+
 	useEffect(() => {
 		browser.storage.sync.get('activeUrl').then((data) => {
 
@@ -63,7 +68,7 @@ export default () => {
 				toggleTheme(message.content)
 			} else if (message.messageType == MessageType.navigate) {
 
-				if (message.href){
+				if (message.href) {
 					setURL(message.href);
 					browser.storage.sync.set({ activeUrl: message.href });
 				}
@@ -177,7 +182,14 @@ export default () => {
 
 	return (
 		<div className={cn(theme, 'h-full flex flex-col')}>
-			<div className='flex flex-row gap-x-2 p-4'>
+
+			{hiddenURLBar && (
+				<Button variant={'outline'} size='sm' onClick={() => handleGoToWebsite()}>
+					<SquareArrowOutUpRight size={16}  /> &nbsp; Go to website
+				</Button>
+			)}
+			<div className='flex flex-row gap-x-2'>
+
 				{
 					!hiddenURLBar && <Input type="text" value={url} placeholder="Type something" onKeyDown={(e) => {
 						if (e.key === 'Enter') {
