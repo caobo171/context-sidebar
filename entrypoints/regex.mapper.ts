@@ -34,5 +34,6 @@ class UrlPatternMapper {
 const urlMapper = new UrlPatternMapper();
 urlMapper.add("https://*.rework.*/m*", "standard.message");
 urlMapper.add("https://*.rework.*/projects*", "standard.projects");
+urlMapper.add("https://*.rework.*/flows*", "standard.flows");
 
 export default urlMapper;

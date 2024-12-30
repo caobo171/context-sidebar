@@ -1,0 +1,55 @@
+#apdialogs {
+	max-width: 100%;
+}
+
+#apdialogs .__dialog_ontop {
+	right: 0px !important;
+}
+
+#apdialogs .__customdialog .__dialogwrapper {
+	left: 0px!important;
+    top: 0px !important;
+    right: 0px;
+	width: 100%;
+	padding-bottom: 0px;
+}
+
+#apdialogs .dialog.__apdialog{
+	max-width: 100%;
+	width: 100% !important;
+}
+
+.task-display::before{
+	display: none;
+}
+
+.task-display .side-body {
+	display: none;
+}
+
+.task-display .main-body {
+	margin-right: 0px;
+}
+
+/**
+** Master
+*/
+#master .master-panel{
+	display: none;
+}
+
+#master .project-master-menu{
+	display: none;
+}
+
+#master .board-master.-sbs{
+	display: none;
+}
+
+#master .master-sbs {
+	width: 100%;
+}
+
+#pagew {
+	left: 0px !important;
+}

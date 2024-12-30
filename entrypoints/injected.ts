@@ -49,4 +49,14 @@ export default defineUnlistedScript(() => {
 		}, 1000)
 		
 	}
+
+
+	if (urlMapper.valid(currenturl, "https://*.rework.*/projects*")){
+		setTimeout(() => {
+			if (window.Client.pageData.tempData.task){
+				
+			}
+		}, 1000)
+		
+	}
 });

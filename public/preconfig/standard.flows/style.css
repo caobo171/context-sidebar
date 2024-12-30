@@ -1,0 +1,42 @@
+.job-display .main-layout {
+	width: 100%;
+}
+
+.job-display .side-layout {
+	display: none;
+}
+
+.job-display .cover .side {
+	display: none;
+}
+
+.job-display .cover .job-main {
+	padding-right: 0px;
+}
+
+/**
+** Master
+*/
+#master .master-panel{
+	display: none;
+}
+
+#master .project-master-menu{
+	display: none;
+}
+
+#master .master-menu{
+	display: none;
+}
+
+#master .master-sbs {
+	width: 100%;
+}
+
+#pagew {
+	left: 0px !important;
+}
+
+#document.-with-ext-panel #pagew {
+	left: 0px !important;
+}
