@@ -1,3 +1,7 @@
+/**
+*	Task
+*/
+
 #apdialogs {
 	max-width: 100%;
 }
@@ -29,6 +33,17 @@
 
 .task-display .main-body {
 	margin-right: 0px;
+}
+
+/**
+** 
+*/
+.master-menu-doc-wrapper {
+	display: none;
+}
+
+.doc-canvas .doc-canvas-page {
+	margin-left: 0px;
 }
 
 /**
