@@ -19,6 +19,7 @@ import urlMapper from '../regex.mapper';
 
 export default () => {
 	const [showButton, setShowButton] = useState(true)
+	const [hiddenURLBar, setHiddenURLBar] = useState(true)
 	const { theme, toggleTheme } = useTheme();
 	const { t, i18n } = useTranslation();
 	const [url, setURL] = useState<string>('');
@@ -42,7 +43,7 @@ export default () => {
 	const onMinusHandle = () => {
 
 	};
-	
+
 
 	useEffect(() => {
 		browser.storage.sync.get('activeUrl').then((data) => {
@@ -54,14 +55,25 @@ export default () => {
 		});
 
 		browser.runtime.onMessage.addListener((message: ExtMessage, sender, sendResponse) => {
-			console.log('sidepanel:')
+			console.log('sidepanel:', message?.messageType)
 			console.log(message)
 			if (message.messageType == MessageType.changeLocale) {
 				i18n.changeLanguage(message.content)
 			} else if (message.messageType == MessageType.changeTheme) {
 				toggleTheme(message.content)
 			} else if (message.messageType == MessageType.navigate) {
-				setURL(message.href)
+
+				if (message.href){
+					setURL(message.href);
+					browser.storage.sync.set({ activeUrl: message.href });
+				}
+
+			} else if (message.messageType == MessageType.OpenWebsite) {
+				if (message.url && message.url != url) {
+					setURL(message.url)
+					openweb(message.url)
+				}
+
 			}
 		});
 
@@ -141,14 +153,19 @@ export default () => {
 			// open that web page
 			iframeRef.current.src = currenturl;
 			iframeRef.current.onload = async () => {
-
-				let value = urlMapper.get(currenturl);
-				let content = browser.runtime.getURL('preconfig/'+value + '/style.css' as PublicPath);
-
-				let text = await fetch(content).then((res) => res.text());
-
-				iframeRef.current?.contentWindow?.postMessage({ messageType: MessageType.injectCSS , rawCSS: text}, '*');
 				setIframeLoading(false);
+				let value = urlMapper.get(currenturl);
+				let file_url = null;
+				if (value) {
+					file_url = browser.runtime.getURL('preconfig/' + value + '/style.css' as PublicPath);
+				}
+
+				if (file_url && value) {
+					let text = await fetch(file_url).then((res) => res.text());
+					iframeRef.current?.contentWindow?.postMessage({ messageType: MessageType.injectCSS, rawCSS: text }, '*');
+				}
+
+
 			}
 
 
@@ -161,29 +178,36 @@ export default () => {
 	return (
 		<div className={cn(theme, 'h-full flex flex-col')}>
 			<div className='flex flex-row gap-x-2 p-4'>
-				<Input type="text" value={url} placeholder="Type something" onKeyDown={(e) => {
-					if (e.key === 'Enter') {
-						actionGo();
-					}
-				}} onChange={(e) => {
-					setURL(e.target.value)
-				}} />
-				{!iframeLoading && 
-				<div className='flex flex-row gap-x-2'>
-					<Button variant="outline" size="icon" onClick={onPlusHandle}>
-						<Plus />
-					</Button>
-					<Button variant="outline" size="icon" onClick={onMinusHandle}>
-						<Minus />
-					</Button>
-				</div>
+				{
+					!hiddenURLBar && <Input type="text" value={url} placeholder="Type something" onKeyDown={(e) => {
+						if (e.key === 'Enter') {
+							actionGo();
+						}
+					}} onChange={(e) => {
+						setURL(e.target.value)
+					}} />
 				}
-				<Button onClick={() => {
-					actionGo();
-				}}
-				>
-					Go
-				</Button>
+
+				{!hiddenURLBar && !iframeLoading &&
+					<div className='flex flex-row gap-x-2'>
+						<Button variant="outline" size="icon" onClick={onPlusHandle}>
+							<Plus />
+						</Button>
+						<Button variant="outline" size="icon" onClick={onMinusHandle}>
+							<Minus />
+						</Button>
+					</div>
+				}
+
+				{
+					!hiddenURLBar && <Button onClick={() => {
+						actionGo();
+					}}
+					>
+						Go
+					</Button>
+				}
+
 			</div>
 
 			<div className='flex relative flex-col w-full h-full'>

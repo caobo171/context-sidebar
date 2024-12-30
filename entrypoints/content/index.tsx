@@ -20,23 +20,24 @@ export default defineContentScript({
 					};
 
 					addEventListener("hashchange", sendNavigateMessage);
-					addEventListener("load", () => {
-						const observeUrlChange = () => {
-							let oldHref = document.location.href;
-							const body = document.querySelector('body');
-							const observer = new MutationObserver(mutations => {
-							  if (oldHref !== document.location.href) {
-								oldHref = document.location.href;
-								/* Changed ! your code here */
-								sendNavigateMessage();
-							  }
-							});
-							observer.observe(body, { childList: true, subtree: true });
-						  };
-					});
 					addEventListener("popstate", sendNavigateMessage);
 
+					const observeUrlChange = () => {
 
+
+						let oldHref = document.location.href;
+						const body = document.querySelector('body');
+						const observer = new MutationObserver(mutations => {
+						  if (oldHref !== document.location.href) {
+							oldHref = document.location.href;
+							/* Changed ! your code here */
+							sendNavigateMessage();
+						  }
+						});
+						observer.observe(body, { childList: true, subtree: true });
+					  };
+
+					  observeUrlChange();
 
 					addEventListener("message", (e) => {
 						console.log('FRAME MESSAGE', e.data);

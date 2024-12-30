@@ -8,6 +8,7 @@ export default defineConfig({
       "activeTab",
       "scripting",
       "sidePanel",
+	  "contextMenus",
       "storage",
       "tabs",
       "declarativeNetRequest",

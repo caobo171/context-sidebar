@@ -6,6 +6,7 @@ export enum MessageType {
 	navigate = "navigate",
 	injectCSS = "injectCSS",
 	injectJS = "injectJS",
+	OpenWebsite = "OpenWebsite",
 }
 
 export enum MessageFrom {

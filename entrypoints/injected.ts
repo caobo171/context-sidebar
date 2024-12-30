@@ -45,9 +45,7 @@ export default defineUnlistedScript(() => {
 	const currenturl = location.href
 	if (urlMapper.valid(currenturl, "https://*.rework.*/m*")){
 		setTimeout(() => {
-			console.log('windonw', window);
 			window.MS.socket = window.MS.connection.init(window.Client.message_socket_url);
-			console.log('windonw', window);
 		}, 1000)
 		
 	}

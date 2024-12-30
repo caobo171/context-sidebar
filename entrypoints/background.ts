@@ -10,10 +10,32 @@ export default defineBackground(() => {
     //monitor the event from extension icon click
     browser.action.onClicked.addListener((tab) => {
         // 发送消息给content-script.js
-        console.log("click icon")
-        console.log(tab)
         browser.tabs.sendMessage(tab.id!, {messageType: MessageType.clickExtIcon});
     });
+
+
+	browser.runtime.onInstalled.addListener(async () => {
+
+		browser.contextMenus.create({
+			id: "openSidePanel",
+			title: "Open this page in side panel",
+			contexts: ["all"]
+		})
+	});
+
+	browser.contextMenus.onClicked.addListener((info, tab) => {
+
+		if (info.menuItemId === "openSidePanel") {
+			browser.sidePanel.open({
+				windowId: tab.windowId,
+			}, () => {
+				setTimeout(() => {
+					console.log('OpenWebsite')
+					chrome.runtime.sendMessage({messageType: MessageType.OpenWebsite, url: tab.url });
+				}, 1000);
+			});
+		}
+	});
 
 
     // // background.js
