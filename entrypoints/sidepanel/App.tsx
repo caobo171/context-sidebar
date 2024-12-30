@@ -52,13 +52,6 @@ export default () => {
 
 	useEffect(() => {
 		browser.runtime.connect({ name: 'side_panel' });
-		window.addEventListener('beforeunload', ()=> {
-
-			browser.declarativeNetRequest.updateSessionRules({
-				removeRuleIds: [1],
-			});
-			alert('before unload')
-		});
 
 		browser.storage.sync.get('activeUrl').then((data) => {
 
@@ -93,12 +86,6 @@ export default () => {
 
 
 		initI18n();
-		
-		return () => {
-			browser.declarativeNetRequest.updateSessionRules({
-				removeRuleIds: [1],
-			});
-		}
 	}, []);
 
 
