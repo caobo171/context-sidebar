@@ -6,13 +6,11 @@ export default defineConfig({
   manifest: {
     permissions: [
       "activeTab",
-      "scripting",
       "sidePanel",
 	  "contextMenus",
       "storage",
       "tabs",
-      "declarativeNetRequest",
-      "declarativeNetRequestFeedback",
+      "declarativeNetRequest"
     ],
     action: {},
     name: "__MSG_extName__",
