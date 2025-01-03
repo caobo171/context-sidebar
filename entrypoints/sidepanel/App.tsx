@@ -126,27 +126,27 @@ export default () => {
 		setIframeLoading(true);
 		await browser.declarativeNetRequest.updateSessionRules({
 			removeRuleIds: [1],
-			addRules: [{
-				id: 1,
-				priority: 1,
-				action: {
-					type: "modifyHeaders",
-					responseHeaders: [
-						{ header: "x-frame-options", operation: "remove" },
-						{ header: "content-security-policy", operation: "remove" },
-						{ header: "frame-ancestors", operation: "remove" },
+			// addRules: [{
+			// 	id: 1,
+			// 	priority: 1,
+			// 	action: {
+			// 		type: "modifyHeaders",
+			// 		responseHeaders: [
+			// 			{ header: "x-frame-options", operation: "remove" },
+			// 			{ header: "content-security-policy", operation: "remove" },
+			// 			{ header: "frame-ancestors", operation: "remove" },
 
-						// Allow CORS by setting Access-Control-Allow-Origin
-						// { header: "Access-Control-Allow-Origin", operation: "set", value: "*" },
-						// { header: "Access-Control-Allow-Methods", operation: "set", value: "GET, POST, OPTIONS, PUT, DELETE" },
-						// { header: "Access-Control-Allow-Headers", operation: "set", value: "Content-Type, Authorization" },
-					],
-				},
-				condition: {
-					urlFilter: "*",
-					resourceTypes: ["main_frame", "sub_frame", "xmlhttprequest", "websocket"],
-				},
-			}],
+			// 			// Allow CORS by setting Access-Control-Allow-Origin
+			// 			// { header: "Access-Control-Allow-Origin", operation: "set", value: "*" },
+			// 			// { header: "Access-Control-Allow-Methods", operation: "set", value: "GET, POST, OPTIONS, PUT, DELETE" },
+			// 			// { header: "Access-Control-Allow-Headers", operation: "set", value: "Content-Type, Authorization" },
+			// 		],
+			// 	},
+			// 	condition: {
+			// 		urlFilter: "*",
+			// 		resourceTypes: ["main_frame", "sub_frame", "xmlhttprequest", "websocket"],
+			// 	},
+			// }],
 		});
 
 
